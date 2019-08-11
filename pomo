@@ -1,0 +1,63 @@
+#!/bin/bash
+
+usage() 
+{ 
+  echo "Usage: $0 [-w WORK_INTERVAL=1500] [-s SHORT_BREAK=120] [LONG_BREAK=1200]" 
+  exit 0
+}
+
+WORK_INTERVAL=1500 # Length of work session. Default 25 min 
+SHORT_BREAK=120 # Length of short breaks. Default 5 min
+LONG_BREAK=1200 # Length of long breaks. Default 20 min
+
+while getopts 'hw:s:l:' OPTION; do
+  case "$OPTION" in
+    w) # Specify WORK_INTERVAL value
+      WORK_INTERVAL=${OPTARG}
+      ;;  
+    s) # Specify SHORT_BREAK value
+      SHORT_BREAK=${OPTARG}
+      ;;
+    l) # Specify LONG_BREAK value
+      LONG_BREAK=${OPTARG}
+      ;;
+    h) # Display help
+      usage
+      exit 0
+      ;;
+    *)
+      if [${OPTARG} -lt 30]; then # Time value can't be less than 30 seconds
+        echo "Incorrect usage. $0 -h for help"
+        exit 1
+      fi
+      ;;
+  esac
+done
+
+echo Starting pomodoro timer
+echo $WORK_INTERVAL
+echo $SHORT_BREAK
+echo $LONG_BREAK
+
+while true; do
+  CYCLE=0
+  while [ $CYCLE -lt 4 ]; do
+    (( CYCLE++ ))
+    notify-send "Pomo: Start session #$CYCLE"
+    spd-say "Get busy"
+    sleep $WORK_INTERVAL
+    if [ $CYCLE -lt 4 ]; then
+      notify-send "Pomo: Short break #$CYCLE"
+      sleep $(($SHORT_BREAK - 30)) 
+      notify-send -t 30000 "Pomo: 30sec until work session starts"
+      sleep 30
+      notify-send "Pomo: Get busy"
+    else
+      notify-send "Pomo: Long break"
+      sleep $(($LONG_BREAK - 30))
+      notify-send -t 30000 "Pomo: 30sec until work session starts"
+      sleep 30
+      notify-send -t 10000 "Pomo: Get busy"
+    fi
+  done
+done
