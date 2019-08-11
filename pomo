@@ -35,9 +35,9 @@ while getopts 'hw:s:l:' OPTION; do
 done
 
 echo Starting pomodoro timer
-echo $WORK_INTERVAL
-echo $SHORT_BREAK
-echo $LONG_BREAK
+echo "WORK_INTERVAL: $WORK_INTERVAL"
+echo "SHORT_BREAK: $SHORT_BREAK"
+echo "LONG_BREAK: $LONG_BREAK"
 
 while true; do
   CYCLE=0
