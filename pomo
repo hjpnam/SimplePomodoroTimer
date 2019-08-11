@@ -2,12 +2,12 @@
 
 usage() 
 { 
-  echo "Usage: $0 [-w WORK_INTERVAL=1500] [-s SHORT_BREAK=120] [LONG_BREAK=1200]" 
+  echo "Usage: $0 [-w WORK_INTERVAL=1500] [-s SHORT_BREAK=300] [LONG_BREAK=1200]" 
   exit 0
 }
 
 WORK_INTERVAL=1500 # Length of work session. Default 25 min 
-SHORT_BREAK=120 # Length of short breaks. Default 5 min
+SHORT_BREAK=300 # Length of short breaks. Default 5 min
 LONG_BREAK=1200 # Length of long breaks. Default 20 min
 
 while getopts 'hw:s:l:' OPTION; do
